@@ -18,6 +18,7 @@ export const signup = async (req: Request, res: Response) => {
             });
         }
 
+        console.log(req.body)
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -28,6 +29,7 @@ export const signup = async (req: Request, res: Response) => {
                 data: null,
             });
         }
+        console.log(existingUser)
 
         // Create new user
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,6 +39,7 @@ export const signup = async (req: Request, res: Response) => {
             password:hashedPassword,
             accountType,
         });
+        console.log(newUser)
 
         // Create token
         const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!, {expiresIn: "30d"});
@@ -46,7 +49,16 @@ export const signup = async (req: Request, res: Response) => {
             success: true,
             error: false,
             message: "User created successfully",
-            data: token,
+            data: {
+                token,
+                user: {
+                    _id: newUser._id,
+                    name: newUser.name,
+                    email: newUser.email,
+                    accountType: newUser.accountType,
+                    image: newUser.image,
+                },
+            },
         });
     } catch (error) {
         console.error("Error in SIGNUP controller: ", error);
@@ -103,7 +115,16 @@ export const login = async (req: Request, res: Response) => {
             success: true,
             error: false,
             message: "User logged in successfully",
-            data: token,
+            data: {
+                token,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    accountType: user.accountType,
+                    image: user.image,
+                },
+            },
         });
     } catch (error) {
         console.error("Error in LOGIN controller: ", error);

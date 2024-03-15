@@ -24,6 +24,8 @@ export const updateProfile = async (req: Request, res: Response) => {
             });
         }
 
+        let imgurl = null;
+
         if(name){
             editedUser.name = name;
         }
@@ -35,18 +37,34 @@ export const updateProfile = async (req: Request, res: Response) => {
             if(prevImage){
                 await deleteFile(prevImage.fileId);
             }
-            const image = new File({
-                fileUrl,
+            const image = await File.create({
+                url:fileUrl,
                 fileId
             });
-            await image.save({ session });
-            editedUser.image = new mongoose.Schema.Types.ObjectId(image._id.toString());
+            imgurl = fileUrl;
+            editedUser.image = image._id as any;
+
         }
 
         await editedUser.save({ session });
         
+        console.log(editedUser);
         await session.commitTransaction();
-        session.endSession();        
+        session.endSession();
+
+        return res.status(200).json({
+            success: true,
+            error: false,
+            message: "Profile updated successfully",
+            data: {
+                user: {
+                    _id: editedUser._id,
+                    name: editedUser.name,
+                    email: editedUser.email,
+                    image: imgurl,                
+                },
+            },
+        });
         
     } catch (error:any) {
         await session.abortTransaction();

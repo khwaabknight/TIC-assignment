@@ -5,10 +5,10 @@ import { Navigate } from 'react-router-dom';
 
 
 // when the account is signed in
-const ProtectedRoute = ({children}:{children:React.ReactNode}) => {
+const PublicRoute = ({children}:{children:React.ReactNode}) => {
     const {token} = useSelector((state : RootState) => state.auth);
-    if(token) return children
-    else return <Navigate to={'/signup'} />
+    if(!token) return children
+    else return <Navigate to={'/'} />
 }
 
-export default ProtectedRoute
+export default PublicRoute

@@ -3,12 +3,12 @@ import mongoose, { Schema } from "mongoose";
 export type ProductType = {
     title: string;
     description: string;
-    orders: mongoose.Schema.Types.ObjectId[];
-    author: mongoose.Schema.Types.ObjectId;
-    consumers: mongoose.Schema.Types.ObjectId[];
+    orders: Schema.Types.ObjectId[];
+    author: Schema.Types.ObjectId;
+    consumers: Schema.Types.ObjectId[];
     productType: "COURSE" | "EVENT";
-    image: mongoose.Schema.Types.ObjectId;
-    productSections: mongoose.Schema.Types.ObjectId[];
+    image: Schema.Types.ObjectId;
+    productSections: Schema.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -25,15 +25,15 @@ const productSchema = new Schema<ProductType>({
         trim:true,
     },
     orders:[{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"Order",
     }],
     author:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"User",
     },
     consumers:[{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"User",
     }],
     productType:{
@@ -42,12 +42,12 @@ const productSchema = new Schema<ProductType>({
         required:true,
     },
     image:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"File",
         required:true,
     },
     productSections:[{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"Section",
     }],
 },{timestamps:true});

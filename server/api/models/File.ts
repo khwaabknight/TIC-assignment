@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-type FileType = {
+export type FileType = {
     url: string;
     fileId: string;
 }

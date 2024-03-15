@@ -3,6 +3,7 @@ import { Application, Request, Response } from "express";
 import express from 'express';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
+import profileRoutes from './routes/profileRoutes';
 import cloudinaryConnect from './config/cloudinary';
 import cors from 'cors';
 import dbConnect from "./config/database";
@@ -39,6 +40,8 @@ server.get("/",(req : Request,res : Response) => {
 server.use("/api/auth",authRoutes);
 // Product Routes
 server.use("/api/product",productRoutes);
+// Profile Routes
+server.use("/api/profile",profileRoutes);
 
 
 server.listen(PORT,() => {

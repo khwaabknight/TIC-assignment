@@ -10,6 +10,11 @@ const navlinks = [
         access: 'CONSUMER'
     },
     {
+        title: 'MyProducts',
+        url: '/adminproducts',
+        access: 'ADMIN'
+    },
+    {
         title: 'Analytics',
         url: '/analytics',
         access: 'ADMIN'

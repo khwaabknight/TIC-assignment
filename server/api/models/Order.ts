@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 export type OrderType = {
-    customer: mongoose.Schema.Types.ObjectId;
-    product: mongoose.Schema.Types.ObjectId;
-    referralUsed?: mongoose.Schema.Types.ObjectId;
+    customer: Schema.Types.ObjectId;
+    product: Schema.Types.ObjectId;
+    referralUsed?: Schema.Types.ObjectId;
     amount: number;
     createdAt: Date;
     updatedAt: Date;
@@ -11,17 +11,17 @@ export type OrderType = {
 
 const orderSchema = new Schema<OrderType>({
     customer: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     product: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Product",
         required: true,
     },
     referralUsed: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Referral",
     },
     amount: {

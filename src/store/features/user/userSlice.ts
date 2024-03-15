@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export type UserType = {
-  id: string,
-  username: string,
+  _id: string,
+  name: string,
   email: string,
-  accountType: 'ADMIN' | 'CONSUMER',
+  accountType: 'ADMIN' | 'CONSUMER' | 'PUBLIC',
   image: string,
 }
 
@@ -14,7 +14,13 @@ export type UserState = {
 }
 
 const initialState: UserState = {
-  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : '',
+  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : {
+    _id: '',
+    name: '',
+    email: '',
+    accountType: 'PUBLIC',
+    image: '',
+  },
 }
 
 export const userSlice = createSlice({
@@ -23,11 +29,20 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action:PayloadAction<UserType>) => {
       state.user = action.payload
+    },
+    resetUser: (state) => {
+      state.user = {
+        _id: '',
+        name: '',
+        email: '',
+        accountType: 'PUBLIC',
+        image: '',
+      }
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser } = userSlice.actions
+export const { setUser, resetUser } = userSlice.actions
 
 export default userSlice.reducer

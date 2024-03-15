@@ -3,8 +3,8 @@ import mongoose, { Schema, Document, Types } from 'mongoose';
 type SectionType = {
     name: string;
     description: string;
-    video?: mongoose.Schema.Types.ObjectId;
-    product: mongoose.Schema.Types.ObjectId;
+    video?: Schema.Types.ObjectId;
+    product: Schema.Types.ObjectId;
 }
 
 const sectionSchema: Schema<SectionType> = new Schema<SectionType>({
@@ -17,7 +17,7 @@ const sectionSchema: Schema<SectionType> = new Schema<SectionType>({
         required: true,
     },
     video: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'File',
     },
     product: {

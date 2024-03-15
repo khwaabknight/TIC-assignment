@@ -1,9 +1,9 @@
 import mongoose, { Schema, model, Document } from 'mongoose';
 
 type ReferralType = {
-    provider: mongoose.Schema.Types.ObjectId;
+    provider: Schema.Types.ObjectId;
     discountPercentage: number;
-    product: mongoose.Schema.Types.ObjectId;
+    product: Schema.Types.ObjectId;
     validity: Date;
     createdAt: Date;
     updatedAt: Date;

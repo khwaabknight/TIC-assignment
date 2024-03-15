@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '../models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { FileType } from '../models/File';
 require('dotenv').config();
 
 export const signup = async (req: Request, res: Response) => {
@@ -21,6 +22,7 @@ export const signup = async (req: Request, res: Response) => {
         console.log(req.body)
         // Check if user already exists
         const existingUser = await User.findOne({ email });
+
         if (existingUser) {
             return res.status(400).json({ 
                 success: false,
@@ -86,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
         }
 
         // Check if user exists
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).populate('image').exec();
         if (!user) {
             return res.status(400).json({ 
                 success: false,
@@ -122,7 +124,7 @@ export const login = async (req: Request, res: Response) => {
                     name: user.name,
                     email: user.email,
                     accountType: user.accountType,
-                    image: user.image,
+                    image: (user.image as FileType).url,
                 },
             },
         });

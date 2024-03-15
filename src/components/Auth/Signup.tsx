@@ -40,10 +40,12 @@ function Signup() {
           ...formData,
           [e.target.name]: e.target.value
         });
+        
     }
 
     const submitHandler = (e:any) => {
         e.preventDefault();
+        console.log(formData)
     
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/signup`,formData)
         .then((res) => {
@@ -63,37 +65,39 @@ function Signup() {
     }
 
     return (
-        <div className='h-[80dvh] flex justify-center items-center max-w-6xl mx-auto'>
-            <div className='md:w-1/2 sm:w-2/5 w-0'>
-                <img src='/images/signup-side.jpg' alt='' className='object-contain'/>
-            </div>
-
-            <div className='md:w-1/2 sm:w-3/5 w-full flex justify-center items-center'>
-                <div className='border rounded-lg relative flex flex-col items-center gap-3 py-5 h-full w-10/12'>
-                    <div className='rounded-full p-1 border bg-white absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2'>
-                        <div className='aspect-square rounded-full overflow-hidden '>
-                        <img src='/images/auth.jpg' alt='' className='object-contain h-16'/>
-                        </div>
+        <div className='h-[80dvh] w-full max-w-7xl mx-auto mt-10'>
+            <div className='flex justify-around items-center'>
+                <div className='md:w-1/2 sm:w-2/5 w-0 md:p-20 sm:p-10 flex justify-center items-center overflow-hidden'>
+                    <div>
+                        <img src='/images/signup-side.jpg' alt='' className='object-contain'/>
                     </div>
-                    <div className='text-center w-full mb-10'>
-                        <h2 className='py-3 font-bold text-lg'>Welcome back!!</h2>
-                        <p>Sign in to your account</p>
-                    </div>
+                </div>
 
-                    <form className='max-w-[250px] w-full flex flex-col gap-5' onSubmit={submitHandler}>
-                        {/* Name */}
-                        <div>
-                            <Label htmlFor='name'/>
-                            <Input type='text' placeholder='Enter name' name='name' id='name' value={formData.name} onChange={changeHandler}/>
+                <div className='md:w-1/2 sm:w-3/5 w-full flex justify-center items-center'>
+                    <div className='border rounded-lg relative flex flex-col items-center gap-3 py-5 h-full w-10/12'>
+                        <div className='rounded-full p-1 border bg-white absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2'>
+                            <div className='aspect-square rounded-full overflow-hidden '>
+                            <img src='/images/auth.jpg' alt='' className='object-contain h-16'/>
+                            </div>
                         </div>
-                        {/* Email */}
-                        <div>
-                            <Label htmlFor='email'/>
-                            <Input type='email' placeholder='Enter email' name='email' id='email' value={formData.email} onChange={changeHandler}/>
+                        <div className='text-center w-full mb-10'>
+                            <h2 className='py-3 font-bold text-lg'>Register</h2>
+                            <p>Sign up as a New User</p>
                         </div>
 
-                        {/* Password */}
-                        <div className='flex gap-2'>
+                        <form className='max-w-[250px] w-full flex flex-col gap-5' onSubmit={submitHandler}>
+                            {/* Name */}
+                            <div>
+                                <Label htmlFor='name'/>
+                                <Input type='text' placeholder='Enter name' name='name' id='name' value={formData.name} onChange={changeHandler}/>
+                            </div>
+                            {/* Email */}
+                            <div>
+                                <Label htmlFor='email'/>
+                                <Input type='email' placeholder='Enter email' name='email' id='email' value={formData.email} onChange={changeHandler}/>
+                            </div>
+
+                            {/* Password */}
                             <div className='relative'>
                                 <Label htmlFor='password'/>
                                 <Input type={showPass ? 'text' : 'password'} placeholder='Enter password' name='password' id='password' className='pr-16' onChange={changeHandler} value={formData.password}/>
@@ -112,48 +116,48 @@ function Signup() {
                                     }
                                 </button>
                             </div>
-                        </div>
 
-                        {/* Account type select */}
-                        <div className='text-slate-500'>
-                            <RadioGroup defaultValue={accountTypes.consumer} onChange={changeHandler} className='grid-cols-3'>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value={accountTypes.admin} id="admin" />
-                                    <Label htmlFor="admin">{accountTypes.admin}</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value={accountTypes.consumer} id="consumer"/>
-                                    <Label htmlFor="consumer">{accountTypes.consumer}</Label>
-                                </div>
-                            </RadioGroup>
-                        </div>
-
-                        {/* Submit */}
-                        <Button type='submit' className='gap-4'>
-                            <p>Signup</p>
-                            <IoLogInOutline size={18} />
-                        </Button>
-
-                        {/* Signup link */}
-                        <div>
-                        <div className='relative'>
-                            <div className='absolute inset-0 flex items-center'>
-                            <div className='w-full border-t border-gray-300'/>
+                            {/* Account type select */}
+                            <div className='text-slate-500'>
+                                <RadioGroup defaultValue={accountTypes.consumer} name='accountType' onChange={changeHandler} className='grid-cols-3'>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={accountTypes.admin} id="admin" />
+                                        <Label htmlFor="admin">{accountTypes.admin}</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={accountTypes.consumer} id="consumer"/>
+                                        <Label htmlFor="consumer">{accountTypes.consumer}</Label>
+                                    </div>
+                                </RadioGroup>
                             </div>
-                            <div className='relative flex justify-center text-sm'>
-                            <span className=' bg-white px-2 text-gray-500'>
-                                Or
-                            </span>
+
+                            {/* Submit */}
+                            <Button type='submit' className='gap-4'>
+                                <p>Signup</p>
+                                <IoLogInOutline size={18} />
+                            </Button>
+
+                            {/* Signup link */}
+                            <div>
+                            <div className='relative'>
+                                <div className='absolute inset-0 flex items-center'>
+                                <div className='w-full border-t border-gray-300'/>
+                                </div>
+                                <div className='relative flex justify-center text-sm'>
+                                <span className=' bg-white px-2 text-gray-500'>
+                                    Or
+                                </span>
+                                </div>
                             </div>
-                        </div>
-                        <div className='flex gap-2 justify-center text-sm px-2 my-2 text-gray-500'>
-                            <p>Already have an account?</p>
-                            <Link to={'/login'} className='underline cursor-pointer'>
-                                Login
-                            </Link>
-                        </div>
-                        </div>
-                    </form>
+                            <div className='flex gap-2 justify-center text-sm px-2 my-2 text-gray-500'>
+                                <p>Already have an account?</p>
+                                <Link to={'/login'} className='underline cursor-pointer'>
+                                    Login
+                                </Link>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 

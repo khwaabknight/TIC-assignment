@@ -8,7 +8,8 @@ export type ProductType = {
     consumers: Schema.Types.ObjectId[];
     productType: "COURSE" | "EVENT";
     image: Schema.Types.ObjectId;
-    productSections: Schema.Types.ObjectId[];
+    productSections?: Schema.Types.ObjectId[];
+    price: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -50,6 +51,10 @@ const productSchema = new Schema<ProductType>({
         type:Schema.Types.ObjectId,
         ref:"Section",
     }],
+    price:{
+        type:Number,
+        required:true,
+    },
 },{timestamps:true});
 
 export const Product = mongoose.model("Product", productSchema);

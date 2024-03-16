@@ -31,6 +31,7 @@ export const userSlice = createSlice({
       state.user = action.payload
     },
     resetUser: (state) => {
+      localStorage.removeItem('user')
       state.user = {
         _id: '',
         name: '',

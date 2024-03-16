@@ -37,7 +37,7 @@ export async function auth(req:Request, res : Response, next:Function) {
             error:true,
             message:"Internal Server Error",
             data:null,
-        });        
+        });
     }
 }
 

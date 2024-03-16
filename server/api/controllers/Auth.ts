@@ -124,7 +124,7 @@ export const login = async (req: Request, res: Response) => {
                     name: user.name,
                     email: user.email,
                     accountType: user.accountType,
-                    image: (user.image as FileType).url,
+                    image: user.image ? (user.image as FileType).url : "",
                 },
             },
         });

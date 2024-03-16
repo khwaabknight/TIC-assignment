@@ -4,12 +4,13 @@ import Product from "../models/Product";
 import User from "../models/User";
 import File from "../models/File";
 import {deleteFile} from "../utils/deleteFile";
+import { productTypes } from "../data/constants";
 
 export const addProduct = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        const { user, title, description, productType,  fileUrl, fileId } = req.body;
+        const { user, title, description, productType, price, fileUrl, fileId } = req.body;
 
         // Check if all required fields are present
         if(!title || !description || !productType || !fileUrl || !fileId) {
@@ -34,6 +35,7 @@ export const addProduct = async (req: Request, res: Response) => {
             description,
             author: user._id,
             productType,
+            price,
             image: image._id,
         });
         await product.save({ session });
@@ -69,7 +71,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        const { productId, title, description, productImage, fileUrl, fileId } = req.body;
+        const {_id:productId, title, description, price, fileUrl, fileId } = req.body;
 
         // Check if productId is present
         if (!productId) {
@@ -101,6 +103,9 @@ export const updateProduct = async (req: Request, res: Response) => {
         }
         if (description) {
             product.description = description;
+        }
+        if (price) {
+            product.price = price;
         }
         if (fileUrl && fileId) {
             const prevImage = product.image as any;
@@ -217,7 +222,6 @@ export const getProducts = async (req: Request, res: Response) => {
             message: "Products fetched successfully",
             data: products,
         });
-
     } catch (error: any) {
         console.log("Error in GET_PRODUCTS controller: ", error);
         return res.status(500).json({
@@ -244,7 +248,7 @@ export const getProduct = async (req: Request, res: Response) => {
         }
 
         // Find the product by productId
-        const product = await Product.findById(productId).populate('author image');
+        const product = await Product.findById(productId).populate('author image productSections').exec();
 
         // Check if product exists
         if (!product) {
@@ -274,4 +278,88 @@ export const getProduct = async (req: Request, res: Response) => {
     }
 }
 
+export const getInstructorProducts = async (req: Request, res: Response) => {
+    try {
+        const { _id:userId } = req.body.user;
 
+        const allproducts = await Product.find({ author: userId }).populate('image').exec();
+        const courses = await Product.find({ author: userId,productType: productTypes.course }).populate('image').exec();
+        const events = await Product.find({ author: userId ,productType: productTypes.event }).populate('image').exec();
+
+
+        return res.status(200).json({
+            success: true,
+            error: false,
+            message: "Instructor products fetched successfully",
+            data: {
+                allproducts,
+                courses,
+                events,
+            },
+        });
+
+    } catch (error: any) {
+        console.log("Error in GET_INSTRUCTOR_PRODUCTS controller: ", error);
+        return res.status(500).json({
+            success: false,
+            error: true,
+            message: "Internal Server Error",
+            data: null,
+        });
+    }
+}
+
+export const getPurchasedProducts = async (req: Request, res: Response) => {
+    try {
+        const { _id:userId } = req.body.user;
+
+        // Find the user by userId
+
+        const user = await User.findById(userId).populate({
+            path: 'purchases',
+            populate: { path: 'image' }
+        }).exec();
+        const courseUser = await User.findById(userId).populate({
+            path: 'purchases',
+            match: { productType: productTypes.course },
+            populate: { path: 'image' }
+        }).exec();
+        const eventUser = await User.findById(userId).populate({
+            path: 'purchases',
+            match: { productType: productTypes.event },
+            populate: { path: 'image' }
+        }).exec();
+
+        // Check if user exists
+        if (!user || !courseUser || !eventUser) {
+            return res.status(404).json({
+                success: false,
+                error: true,
+                message: "User not found",
+                data: null,
+            });
+        }
+
+        const purchasedProducts = {
+            all: user.purchases,
+            courses: courseUser.purchases,
+            events: eventUser.purchases,
+        }
+
+        return res.status(200).json({
+            success: true,
+            error: false,
+            message: "Purchased courses fetched successfully",
+            data: purchasedProducts,
+        });
+
+    } catch (error: any) {
+        console.log("Error in GET_PURCHASED_COURSES controller: ", error);
+        return res.status(500).json({
+            success: false,
+            error: true,
+            message: "Internal Server Error",
+            data: null,
+        });
+    }
+}

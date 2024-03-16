@@ -11,3 +11,10 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.parent-hidden-child .hidden-child{
+    visibility: hidden;
+}
+.parent-hidden-child:hover .hidden-child{
+    visibility: visible;
+}

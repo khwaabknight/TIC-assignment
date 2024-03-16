@@ -22,6 +22,7 @@ import { useRef, useState } from "react";
 import { Input } from "../shadcn/ui/input";
 import { Label } from "../shadcn/ui/label";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 
@@ -73,19 +74,28 @@ function Navbar() {
       const value = profileData[key as keyof typeof profileData] ?? '';
       formData.append(key, value);
     }
-    console.log(import.meta.env.VITE_API_BASE_URL)
     axios.put(`${import.meta.env.VITE_API_BASE_URL}/profile/updateProfile`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
+      console.log(res)
+      
       const user = res?.data?.data?.user;
       localStorage.setItem('user',JSON.stringify(user))
       dispatch(setUser(user))
+      window.location.reload();
+      toast.success('User updated')
+      
+      console.log("res got")
     }).catch((error:any) => {
       console.log('error while updating profile:', error)
+      logoutHandler();
+      window.location.reload();
+      toast.error('Invalid credentials')
     })
   }
+
   return (
     <div className="bg-slate-800 p-1 z-40">
       <div 

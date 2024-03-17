@@ -15,28 +15,14 @@ const referralSchema = new Schema<ReferralType>({
         ref: 'User',
         required: true,
     },
-    discountPercentage: {
-        type: Number,
-        required: true,
-    },
     product: {
         type: Schema.Types.ObjectId,
         ref: 'Product',
         required: true,
     },
-    validity: {
-        type: Date,
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        required: true,
-    },
-    updatedAt: {
-        type: Date,
-        required: true,
-    },
 }, {timestamps: true});
+
+referralSchema.index({createdAt: 1},{expireAfterSeconds: 3 * 24 * 60 * 60 * 1000});
 
 const Referral = model<ReferralType>('Referral', referralSchema);
 

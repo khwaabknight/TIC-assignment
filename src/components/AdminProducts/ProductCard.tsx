@@ -1,12 +1,12 @@
-import {
-    Card,
-    CardContent,
-    CardHeader,
-} from "@/components/shadcn/ui/card"
+import {Card, CardContent, CardHeader} from "@/components/shadcn/ui/card"
 import { Badge } from "@/components/shadcn/ui/badge"
+
+  
 
 import { MdEditDocument } from "react-icons/md";
 import { productTypes } from "@/data/constants";
+import { Link } from "react-router-dom";
+import ReferButton from "../Referrals/ReferButton";
 
 type ProductCardType = {
     data : ProductType,
@@ -18,12 +18,14 @@ function ProductCard({data,instructor}:ProductCardType) {
     <div className="p-2 parent-hidden-child">
         
         <Card className="relative bg-slate-50">
-            {instructor && <div className="hidden-child absolute inset-0 w-full h-full bg-blue-300/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <div className="text-yellow-600 text-3xl flex items-center justify-center gap-2">
-                    <p>Edit</p>
-                    <MdEditDocument />
+            {
+                instructor && <div className="hidden-child absolute inset-0 w-full h-full bg-black/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                    <div className="text-yellow-600 text-3xl flex items-center justify-center gap-2">
+                        <p>Edit</p>
+                        <MdEditDocument />
+                    </div>
                 </div>
-            </div>}
+            }
             <CardHeader>
                 <div className="flex items-center justify-center">
                     <img src={(data.image as FileType).url} alt="" className="max-h-60 h-auto max-w-60 w-11/12" />
@@ -41,7 +43,16 @@ function ProductCard({data,instructor}:ProductCardType) {
                     <p className="text-slate-500">{data.description.substring(0,90)}...</p>
                     <p className="font-semibold text-2xl text-slate-400">Rs. {data.price}</p>
                 </div>
+                {
+                    !instructor && <div className="w-full flex justify-end items-center p-3 gap-5">
+                        <Link to={`/products/${data._id}`} className="text-lg font-bold text-gray-500">
+                            View Details
+                        </Link>
+                        <ReferButton productId={data._id}/>
+                    </div>
+                }
             </CardContent>
+
         </Card>
     </div>
   )

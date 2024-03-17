@@ -27,15 +27,15 @@ function ProductDisplay({data}:ProductDisplayProps) {
   return (
     <AlertDialog>
         <AlertDialogTrigger className="outline-none">
-          <ProductCard data={data} />
+          <ProductCard  data={data} instructor/>
         </AlertDialogTrigger>
         <AlertDialogContent>
-        <AlertDialogHeader>
-            <AlertDialogTitle>Fill details to update the product :</AlertDialogTitle>
-            <AlertDialogDescription className="">
-                <ProductForm productData={productData} setProductData={setProductData} add={false} _id={data._id}/>
-            </AlertDialogDescription>
-        </AlertDialogHeader>
+          <AlertDialogHeader>
+              <AlertDialogTitle>Fill details to update the product :</AlertDialogTitle>
+              <AlertDialogDescription className="">
+                  <ProductForm productData={productData} setProductData={setProductData} add={false} _id={data._id}/>
+              </AlertDialogDescription>
+          </AlertDialogHeader>
         </AlertDialogContent>
     </AlertDialog>
     

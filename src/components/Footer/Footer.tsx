@@ -1,8 +1,12 @@
 import { AiFillTwitterCircle, AiFillLinkedin, AiFillGithub, AiFillFacebook, AiFillInstagram } from 'react-icons/ai';
 
-function Footer() {
+type FooterProps = {
+  classes?:string
+}
+
+function Footer({classes}:FooterProps) {
   return (
-    <div className="bg-slate-800 p-1 mt-20">
+    <div className={`bg-slate-800 p-1 mt-20 ${classes}`}>
       <div 
         className=" text-white p-2 w-11/12 max-w-7xl mx-auto flex justify-between items-center bg-slate-800 rounded-lg"
       >

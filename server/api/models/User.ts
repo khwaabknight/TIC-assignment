@@ -9,6 +9,7 @@ export type UserType = {
     image: Schema.Types.ObjectId | FileType;
     products: Schema.Types.ObjectId[];
     purchases: Schema.Types.ObjectId[];
+    referrals: Schema.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -46,6 +47,10 @@ const userSchema = new Schema<UserType>({
         type:Schema.Types.ObjectId,
         ref:"Order",
     }],
+    referrals:[{
+        type:Schema.Types.ObjectId,
+        ref:"Referral",
+    }]
 });
 
 userSchema.pre('save',function(next){

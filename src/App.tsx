@@ -14,6 +14,7 @@ import Orders from './components/Orders/Orders';
 import Referrals from './components/Referrals/Referrals';
 import Analytics from './components/Analytics/Analytics';
 import MyProducts from './components/AdminProducts/MyProducts';
+import SingleProduct from './components/Products/SingleProduct';
 
 function App() {
 
@@ -41,6 +42,20 @@ function App() {
             <ConsumerRoute>
               <Products/>
             </ConsumerRoute>
+          </ProtectedRoute>
+        }/>
+        <Route path="/products/:productId" element={
+          <ProtectedRoute >
+            <ConsumerRoute>
+              <SingleProduct/>
+            </ConsumerRoute>
+          </ProtectedRoute>
+        }/>
+        <Route path="/adminproducts/:productId" element={
+          <ProtectedRoute >
+            <AdminRoute>
+              <SingleProduct admin/>
+            </AdminRoute>
           </ProtectedRoute>
         }/>
 

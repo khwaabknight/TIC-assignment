@@ -62,10 +62,10 @@ function AddProductModal() {
     
 
   return (
-    <Tabs defaultValue="account" className="w-full flex flex-col">
+    <Tabs defaultValue="Course" className="w-full flex flex-col">
         <TabsList className="flex justify-around">
-            <TabsTrigger value="account" className="w-full" onClick={setProductTypeCourse}>Course</TabsTrigger>
-            <TabsTrigger value="password" className="w-full" onClick={setProductTypeEvent}>Event</TabsTrigger>
+            <TabsTrigger value="Course" className="w-full" onClick={setProductTypeCourse}>Course</TabsTrigger>
+            <TabsTrigger value="Event" className="w-full" onClick={setProductTypeEvent}>Event</TabsTrigger>
         </TabsList>
     
         <ProductForm productData={productData} setProductData={setProductData} add={true}/>

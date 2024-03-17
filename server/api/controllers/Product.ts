@@ -5,6 +5,7 @@ import User from "../models/User";
 import File from "../models/File";
 import {deleteFile} from "../utils/deleteFile";
 import { productTypes } from "../data/constants";
+import Section from "../models/Section";
 
 export const addProduct = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
@@ -215,12 +216,18 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
 export const getProducts = async (req: Request, res: Response) => {
     try {
-        const products = await Product.find().populate('author image');
+        const allproducts = await Product.find().populate('author image');
+        const courses = await Product.find({productType:productTypes.course}).populate('author image');
+        const events = await Product.find({productType:productTypes.event}).populate('author image');
         return res.status(200).json({
             success: true,
             error: false,
             message: "Products fetched successfully",
-            data: products,
+            data: {
+                allproducts,
+                courses,
+                events,
+            },
         });
     } catch (error: any) {
         console.log("Error in GET_PRODUCTS controller: ", error);
@@ -235,7 +242,8 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const getProduct = async (req: Request, res: Response) => {
     try {
-        const { productId } = req.body;
+        await Section.find();
+        const { productId } = req.params;
 
         // Check if productId is present
         if (!productId) {
@@ -249,6 +257,8 @@ export const getProduct = async (req: Request, res: Response) => {
 
         // Find the product by productId
         const product = await Product.findById(productId).populate('author image productSections').exec();
+
+        console.log(product)
 
         // Check if product exists
         if (!product) {

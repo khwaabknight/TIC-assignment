@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export type FileType = {
+    _id: Schema.Types.ObjectId;
     url: string;
     fileId: string;
 }

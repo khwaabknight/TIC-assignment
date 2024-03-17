@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
+import { FileType } from './File';
 
 type SectionType = {
     name: string;
     description: string;
-    video?: Schema.Types.ObjectId;
+    video?: Schema.Types.ObjectId | FileType;
     product: Schema.Types.ObjectId;
 }
 

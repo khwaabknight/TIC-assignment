@@ -19,7 +19,7 @@ router.delete("/deleteproduct", auth, isAdmin, deleteProduct);
 router.get("/getproducts", auth, isConsumer, getProducts);
 
 // Route for get single product
-router.get("/getproduct", auth, getProduct);
+router.get("/getproduct/:productId", auth, getProduct);
 
 // Route for get instructor products
 router.get("/getinstructorproducts", auth, isAdmin, getInstructorProducts);

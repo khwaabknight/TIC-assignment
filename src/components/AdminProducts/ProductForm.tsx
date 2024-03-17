@@ -6,12 +6,16 @@ import {
 import { Input } from "../shadcn/ui/input";
 import { Label } from "../shadcn/ui/label";
 import { Textarea } from "@/components/shadcn/ui/textarea"
+import { Button } from "../shadcn/ui/button";
 
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import toast from "react-hot-toast";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { productTypes } from "@/data/constants";
+import { CiShare1 } from "react-icons/ci";
 
 type ProductDataType = {
     title:string,
@@ -83,7 +87,7 @@ function ProductForm({productData,setProductData,add,_id}:ProductFormType) {
                 }
             }).then((res) => {
                 console.log(res);
-                toast.success(`${productData.productType} created successfully`)
+                toast.success(`${productData.productType} updated successfully`)
             }).catch((error:any) => {
                 console.log(error)
                 toast.error('An error occured !')
@@ -114,9 +118,16 @@ function ProductForm({productData,setProductData,add,_id}:ProductFormType) {
             <Input type="text" value={productData.price} name="price" onChange={changeHandler}/>
         </div>
         <div className="flex justify-end w-full">
-            <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogFooter className="w-full gap-5">
+                {   
+                    !add && _id && productData.productType === productTypes.course &&
+                    <Button type="button" className="gap-2">
+                        <Link to={`/adminproducts/${_id}`} className="flex">Edit Sections</Link>
+                        <CiShare1/>
+                    </Button>
+                }
                 <AlertDialogAction><button type="submit">{add ? "Add Product" : "Update Product"}</button></AlertDialogAction>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
             </AlertDialogFooter>
         </div>
     </form>

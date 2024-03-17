@@ -31,7 +31,6 @@ function ReferButton({productId}:ReferButtonType) {
     const {token} = useSelector((state:RootState) => state.auth);
 
     useEffect(() => {
-
         // Fetch referral code from server
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/referral/createReferral`,{productId},{
             headers:{
@@ -39,7 +38,6 @@ function ReferButton({productId}:ReferButtonType) {
             }
         }).then((res) => {
             const newReferralCode = res.data?.data;
-            console.log(newReferralCode)
             setReferralCode(newReferralCode);
         }).catch((error:any) => {
             console.log(error);  

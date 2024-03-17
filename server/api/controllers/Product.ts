@@ -256,7 +256,23 @@ export const getProduct = async (req: Request, res: Response) => {
         }
 
         // Find the product by productId
-        const product = await Product.findById(productId).populate('author image productSections').exec();
+        const product = await Product.findById(productId).populate([{
+                path: 'author',
+                model: 'User',
+            },
+            {
+                path: 'image',
+                model: 'File'
+            },
+            {
+                path: 'productSections',
+                model: 'Section',
+                populate:{
+                    path:'video',
+                    model:'File'
+                }
+            }
+        ]).exec();
 
         console.log(product)
 

@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 export type OrderType = {
+    rzpOrderId: string;
     customer: Schema.Types.ObjectId;
     product: Schema.Types.ObjectId;
     referralUsed?: Schema.Types.ObjectId;
@@ -10,6 +11,10 @@ export type OrderType = {
 }
 
 const orderSchema = new Schema<OrderType>({
+    rzpOrderId: {
+        type: String,
+        required: true,
+    },
     customer: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -23,10 +28,6 @@ const orderSchema = new Schema<OrderType>({
     referralUsed: {
         type: Schema.Types.ObjectId,
         ref: "Referral",
-    },
-    amount: {
-        type: Number,
-        required: true,
     },
 }, { timestamps: true });
 

@@ -24,7 +24,6 @@ function Products() {
       }
     }).then((res) => {
       const newProducts = res.data?.data;
-      console.log(newProducts)
       setProductsData(newProducts);
     }).catch((error:any) => {
       console.log(error);  

@@ -45,7 +45,7 @@ const userSchema = new Schema<UserType>({
     }],
     purchases:[{
         type:Schema.Types.ObjectId,
-        ref:"Order",
+        ref:"Product",
     }],
     referrals:[{
         type:Schema.Types.ObjectId,

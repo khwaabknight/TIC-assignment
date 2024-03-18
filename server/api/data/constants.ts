@@ -6,3 +6,9 @@ export const productTypes = {
     course: "COURSE",
     event: "EVENT",
 }
+
+export const orderStatus = {
+    pending: "PENDING",
+    completed: "COMPLETED",
+    failed: "FAILED",
+}

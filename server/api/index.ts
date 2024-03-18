@@ -7,6 +7,7 @@ import profileRoutes from './routes/profileRoutes';
 import sectionRoutes from './routes/sectionRoutes';
 import referralsRoutes from "./routes/referralsRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
+import analyticsRoutes from "./routes/analyticsRoutes";
 import cloudinaryConnect from './config/cloudinary';
 import cors from 'cors';
 import dbConnect from "./config/database";
@@ -51,6 +52,8 @@ server.use("/api/referral",referralsRoutes);
 server.use("/api/section",sectionRoutes);
 // Payment Routes
 server.use("/api/payment",paymentRoutes);
+// Analytics Routes
+server.use("/api/analytics",analyticsRoutes);
 
 
 server.listen(PORT,() => {

@@ -8,16 +8,19 @@ import SectionDisplay from "./SectionDisplay";
 import { productTypes } from "@/data/constants";
 import { Button } from "../shadcn/ui/button";
 import toast from "react-hot-toast";
+import { Input } from "../shadcn/ui/input";
 
 
 
 type SingleProductProps = {
   admin?: boolean;
+  purchased?: boolean;
 }
 
-function SingleProduct({admin}:SingleProductProps) {
+function SingleProduct({admin,purchased}:SingleProductProps) {
   const {token} = useSelector((state:RootState) => state.auth);
   const { productId } = useParams();
+  const [referral, setReferral] = useState('');
   const [product, setProduct] = useState({
     _id: productId,
     title: '',
@@ -44,6 +47,10 @@ function SingleProduct({admin}:SingleProductProps) {
         console.error("Error fetching product:", error);
       });
   }, [productId,setProduct,token]);
+
+  const referralChangeHadler = (event:any) => {
+    setReferral(event.target.value);
+  }
 
   const initPayment = (order:any) => {
     const options = {
@@ -78,6 +85,7 @@ function SingleProduct({admin}:SingleProductProps) {
   const handlePayment = () => {
     axios.post(`${import.meta.env.VITE_API_BASE_URL}/payment/createorder`,{
       productId: productId,
+      referral: referral,
     },{
       headers:{
         Authorization: `Bearer ${token}`
@@ -110,15 +118,16 @@ function SingleProduct({admin}:SingleProductProps) {
         </div>
         <div className="md:w-1/2 mx-auto">
           {
-            admin && product.productType === productTypes.course &&
+            product.productType === productTypes.course &&
             (
-              <SectionDisplay product={product}/>
+              <SectionDisplay product={product} admin={admin} purchased={purchased}/>
             )
           }
           {/* Add payment button */}
           {
-            !admin &&
+            !admin && !purchased &&
             <div className="flex justify-center items-center gap-5">
+              <Input type="text" placeholder="Referral(if any)" className="p-2 border-2 border-slate-300 rounded-md" value={referral} onChange={referralChangeHadler}/>
               <Button type="button" variant={'yellow'} size={'lg'} onClick={handlePayment} >Buy Now</Button>
             </div>
           }

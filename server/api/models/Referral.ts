@@ -25,8 +25,6 @@ const referralSchema = new Schema<ReferralType>({
     }]
 }, {timestamps: true});
 
-referralSchema.index({createdAt: 1},{expireAfterSeconds: 3 * 24 * 60 * 60 * 1000});
-
-const Referral = model<ReferralType>('Referral', referralSchema);
+const Referral = mongoose.model<ReferralType>('Referral', referralSchema);
 
 export default Referral;

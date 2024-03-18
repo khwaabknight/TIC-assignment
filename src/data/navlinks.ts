@@ -21,12 +21,12 @@ const navlinks = [
     },
     {
         title: 'Referrals',
-        url: '/Referrals',
+        url: '/referrals',
         access: 'CONSUMER'
     },
     {
-        title:'Orders',
-        url:'/orders',
+        title:'Purchases',
+        url:'/purchases',
         access:'CONSUMER'
     }
 ]

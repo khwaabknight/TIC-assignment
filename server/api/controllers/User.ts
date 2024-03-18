@@ -79,3 +79,32 @@ export const updateProfile = async (req: Request, res: Response) => {
         });        
     }
 }
+
+export const getUserProducts = async (req: Request, res: Response) => {
+    try {
+        const { user } = req.body;
+        const populatedUser = await User.findById(user._id).populate({
+            path: "purchases",
+            populate: {
+                path: "image",
+                model: "File",
+            },
+        }).exec();
+        return res.status(200).json({
+            success: true,
+            error: false,
+            message: "User products fetched successfully",
+            data: {
+                purchases: populatedUser?.purchases,
+            },
+        });
+    } catch (error:any) {
+        console.log("Error in GET_USER_PRODUCTS controller: ", error);
+        return res.status(500).json({
+            success: false,
+            error: true,
+            message: "Internal Server Error",
+            data: null,
+        });
+    }
+}

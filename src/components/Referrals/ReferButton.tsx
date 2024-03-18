@@ -1,6 +1,5 @@
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -13,7 +12,7 @@ import { Button } from "../shadcn/ui/button";
 import { Badge } from "@/components/shadcn/ui/badge"
 
 import { FaShare } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -30,8 +29,7 @@ function ReferButton({productId}:ReferButtonType) {
     });
     const {token} = useSelector((state:RootState) => state.auth);
 
-    useEffect(() => {
-        // Fetch referral code from server
+    const createReferral = async () => {
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/referral/createReferral`,{productId},{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -40,14 +38,16 @@ function ReferButton({productId}:ReferButtonType) {
             const newReferralCode = res.data?.data;
             setReferralCode(newReferralCode);
         }).catch((error:any) => {
-            console.log(error);  
+            console.log(error);
         })
+    }
 
-    },[setReferralCode]);
   return (
     <AlertDialog>
         <AlertDialogTrigger>
-            <Button variant={'yellow'} className="gap-2 text-gray-100">
+            <Button type="button" variant={'yellow'} className="gap-2 text-gray-100"
+            onClick={createReferral}
+            >
                 <p>Refer</p>
                 <FaShare />
             </Button>

@@ -10,11 +10,11 @@ import PublicRoute from './components/Auth/PublicRoute';
 import Error from './components/Common/Error';
 import Home from './components/Home/Home';
 import Products from './components/Products/Products';
-import Orders from './components/Orders/Orders';
 import Referrals from './components/Referrals/Referrals';
 import Analytics from './components/Analytics/Analytics';
 import MyProducts from './components/AdminProducts/MyProducts';
 import SingleProduct from './components/Products/SingleProduct';
+import PurchaseHistory from './components/PurchaseHistory/PurchaseHistory';
 
 function App() {
 
@@ -83,10 +83,17 @@ function App() {
             </ConsumerRoute>
           </ProtectedRoute>
         }/>        
-        <Route path="/admin" element={
+        <Route path="/purchases" element={
           <ProtectedRoute >
             <ConsumerRoute>
-              <Orders/>
+              <PurchaseHistory/>
+            </ConsumerRoute>
+          </ProtectedRoute>
+        }/>
+        <Route path="/purchases/:productId" element={
+          <ProtectedRoute >
+            <ConsumerRoute>
+              <SingleProduct purchased/>
             </ConsumerRoute>
           </ProtectedRoute>
         }/>

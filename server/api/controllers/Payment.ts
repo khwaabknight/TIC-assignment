@@ -6,6 +6,7 @@ import crypto from "crypto";
 import Order from "../models/Order";
 import User from "../models/User";
 import Referral from "../models/Referral";
+import { orderStatus } from "../data/constants";
 
 
 export const createOrder = async (req:Request, res:Response) => {
@@ -48,7 +49,10 @@ export const createOrder = async (req:Request, res:Response) => {
             rzpOrderId: order.id,
             customer: user._id,
             product: productId,
-            referralUsed: referral,
+            amount: product.price,
+            instructor: product.author,
+            referralUsed: referral ? referral : undefined,
+            status: orderStatus.pending,
         });
         console.log("order in CREATE_ORDER",order)
         return res.status(200).json({
@@ -84,7 +88,7 @@ export const verifyPayment = async (req:Request, res:Response) => {
             .digest("hex");
 
         if (generated_signature === razorpay_signature) {
-            const orderData = await Order.findOne({ rzpOrderId: razorpay_order_id }).session(session);
+            const orderData = await Order.findOneAndUpdate({ rzpOrderId: razorpay_order_id,status: orderStatus.pending},{status:orderStatus.completed},{new:true}).session(session);
             if (!orderData) {
                 return res.status(404).json({
                     success: false,
@@ -93,9 +97,9 @@ export const verifyPayment = async (req:Request, res:Response) => {
                     data: null,
                 });
             }
-            const user =await User.findByIdAndUpdate(orderData.customer, { $push: { purchases: orderData.product } }).session(session);
-            const product =await Product.findByIdAndUpdate(orderData.product, { $push: { consumers: orderData.customer } }).session(session);
-            const referral = await Referral.findByIdAndUpdate(orderData.referralUsed, { $push: { consumers: orderData.customer } }).session(session);
+            const user = await User.findByIdAndUpdate(orderData.customer, { $push: { purchases: orderData.product } }).session(session);
+            const product = await Product.findByIdAndUpdate(orderData.product, { $push: { consumers: orderData.customer } }).session(session);
+            const referral = await Referral.findByIdAndUpdate(orderData.referralUsed, { $push: { usedBy: orderData.customer } }).session(session);
 
             await session.commitTransaction();
             session.endSession();
@@ -104,9 +108,10 @@ export const verifyPayment = async (req:Request, res:Response) => {
                 success: true,
                 error: false,
                 message: "Payment verified successfully",
-                data: null,
+                data: orderData,
             });
         } else {
+            await Order.findOneAndUpdate({ rzpOrderId: razorpay_order_id,status: orderStatus.pending},{ status: orderStatus.failed }).session(session);
             await session.abortTransaction();
             session.endSession();
 
